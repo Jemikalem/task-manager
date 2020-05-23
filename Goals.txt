@@ -1,0 +1,116 @@
+*****
+Goal: Setup the task creation endpoint
+1. create a separate file for the task model (load it into index.js)
+2. create the task creation endpoint (handle success and error)
+3. test the endpoint from postman with good and bad data
+
+*****
+Goal: Setup the task reading endpoints
+1. Create an endpoint for fetching all tasks
+2. Create an endpoint for fetching a task by its id
+3. Setup new requests in Postman and test your work
+
+*****
+Goal: Mess around with promise chaining
+1. Create promise-chaining-2.js
+2. Load in mongoose and task model
+3. Remove a given task by id
+4. Get and print the total number of incomplete tasks
+5. Test your work!
+
+*****
+Goal: Use async/await
+1. Create deleteTaskAndCount as an async function
+    - Accept id of task to Remove
+2. Use await to delete task and count up incomplete tasks
+3. Return the count
+4. Call the function and attach then/catch to log results
+5. Test your work!
+
+****
+Goal: Refactor task routes to use await/await
+1. Refactor task routes to use await/await
+2. Test all routes in Postman
+
+
+****
+Goal: Allow for task updates
+1. Setup the route handler
+2. Send error if unknown updates
+3. Attempt of update the task
+    - Handle task not found
+    - Handle validation errors
+    - Handle success
+4. Test your work!
+
+
+****
+Goal: Allow for removal tasks
+1. Setup the endpoint handler
+2. Attempt to delete the task by id
+    - Handle success
+    - Handle task not found
+    - Handle error
+3. Test your work
+
+
+****
+Goal: Create task router
+1. Create new file the creates/exports new router
+2. Move all the tasks routes over
+3. Load in an use that router with express app
+4. Test your work
+
+
+****
+Goal: Change how tasks are updated
+1. Find the task
+2. Alter the task properties
+3. Save the task
+4. Test your work by updating a task from Postman
+
+
+****
+Goal: Have signup send back auth token
+1. Generate a token for the saved user
+2. Send back both the token and the user
+3. Create a new user from Postman and confirm the token is here
+
+
+****
+Goal: Setup middleware for maintenance model
+1. Register a new middleware function
+2. Send back a maintenance message with a 503 status code
+3. Try your requests from the server and confirm status/message shows
+
+
+****
+Goal: Create a way to logout af all sessions
+1. Setup POST /users/logoutAll
+2. Create the router handler to wipe the tokens array
+    - Send 200 or 500
+3. Test your work
+    - Login a few times and logout of all. Check database
+
+
+****
+Goal: Refactor the update profile route
+1. Update the URL to /users/me
+2. Add the authentication middleware into the mix
+3. Use the existing user document instead of fetching via param id
+4. Test your work in Postman!
+
+
+****
+Goal: Refactor GET /tasks
+
+1. Add authentication
+2. Return tasks only for the authenticated user
+3. Test your work!
+
+
+****
+Goal: Refactor DELETE /tasks/:id
+1. Add authentication
+2. Find the task by _id/owner (findOneAndDelete)
+3. Test your work!
