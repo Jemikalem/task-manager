@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
         //We are going do decode it in order to verify the payload is matching to our signature
-        const decoded = jwt.verify(token, 'thisismysignature')
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 
         if (!user) {
