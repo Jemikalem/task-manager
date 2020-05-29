@@ -1,25 +1,10 @@
 const request = require('supertest')
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
 const app = require('../src/app')
 const User = require('../src/models/user')
-
-const userOneId = new mongoose.Types.ObjectId()
-const userOne = {
-    _id: userOneId,
-    name: 'Mike',
-    email: 'mike@example.com',
-    password: '53rfd!?e',
-    tokens: [{
-        token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET)
-    }]
-}
+const { userOneId, userOne, setupDatabase } = require('./fixtures/db')
 
 // Setup & Teardown
-beforeEach(async () => {
-    await User.deleteMany()
-    await new User(userOne).save()
-})
+beforeEach(setupDatabase)
 
 // Le prb c'est que s'il on exécute le test deux fois de suite
 // la deuxième fois il retournera une erreur car le user ayant déjà été crée
@@ -68,7 +53,7 @@ test('Should not login nonexistent user', async () => {
 test('Should get profile for user', async () => {
     await request(app)
         .get('/users/me')
-        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`) //the set method for the Header
         .send()
         .expect(200)
 })
@@ -97,4 +82,36 @@ test('Should not delete account for unauthenticated user', async () => {
         .delete('/users/me')
         .send()
         .expect(401)
+})
+
+test('Should upload avatar image', async () => {
+    await request(app)
+        .post('/users/me/avatar')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)  
+        .attach('avatar', 'tests/fixtures/profile-pic.jpg')
+        .expect(200)
+    const user = await User.findById(userOneId)
+    expect(user.avatar).toEqual(expect.any(Buffer))
+})
+
+test('Should update valid user fields', async () => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({
+            name: 'Jess'
+        })
+        .expect(200)
+    const user = await User.findById(userOneId)
+    expect(user.name).toEqual('Jess')
+})
+
+test('Should not update invalid user fields', async () => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({
+            location: 'Paris'
+        })
+        .expect(400)
 })
