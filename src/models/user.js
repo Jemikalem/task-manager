@@ -93,7 +93,7 @@ userSchema.methods.generateAuthToken = async function () {
     return token
 }
 
-// userSchema.staticsis for methods on the actual uppercase U user model
+// userSchema.statics is for methods on the actual uppercase U user model
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
 
